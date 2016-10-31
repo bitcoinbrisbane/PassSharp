@@ -1,12 +1,15 @@
 ﻿using System;
+using System.IO;
 
 namespace PassSharp
 {
 	public class Asset
 	{
-		public void asset(string file)
+		public byte[] asset { get; private set; }
+
+		public Asset(string path)
 		{
-			//Image.fromFile(file)
+			asset = File.ReadAllBytes(path);
 		}
 	}
 }

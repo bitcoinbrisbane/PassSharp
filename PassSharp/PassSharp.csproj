@@ -4,7 +4,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{F534EB26-10F5-47B3-BFDA-0383FC33B743}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>PassSharp</RootNamespace>
     <AssemblyName>PassSharp</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -38,24 +38,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Src\Pass.cs" />
-    <Compile Include="Src\PassWriter.cs" />
-    <Compile Include="Src\Fields\Location.cs" />
-    <Compile Include="Src\Fields\Barcode.cs" />
-    <Compile Include="Src\Fields\Field.cs" />
-    <Compile Include="Src\Fields\FieldDataType.cs" />
-    <Compile Include="Src\Fields\Beacon.cs" />
-    <Compile Include="Src\Fields\NFC.cs" />
-    <Compile Include="Src\Fields\FieldType.cs" />
-    <Compile Include="Src\Fields\TransitType.cs" />
-    <Compile Include="Src\Fields\FieldAlignment.cs" />
-    <Compile Include="Src\Fields\BarcodeFormat.cs" />
-    <Compile Include="Src\PassType.cs" />
-    <Compile Include="Src\Asset.cs" />
+    <Compile Include="src\Pass.cs" />
+    <Compile Include="src\PassWriter.cs" />
+    <Compile Include="src\Fields\Location.cs" />
+    <Compile Include="src\Fields\Barcode.cs" />
+    <Compile Include="src\Fields\Field.cs" />
+    <Compile Include="src\Fields\FieldDataType.cs" />
+    <Compile Include="src\Fields\Beacon.cs" />
+    <Compile Include="src\Fields\NFC.cs" />
+    <Compile Include="src\Fields\FieldType.cs" />
+    <Compile Include="src\Fields\TransitType.cs" />
+    <Compile Include="src\Fields\FieldAlignment.cs" />
+    <Compile Include="src\Fields\BarcodeFormat.cs" />
+    <Compile Include="src\PassType.cs" />
+    <Compile Include="src\Asset.cs" />
+    <Compile Include="test\PassTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Src\" />
-    <Folder Include="Src\Fields\" />
+    <Folder Include="src\" />
+    <Folder Include="src\Fields\" />
+    <Folder Include="test\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

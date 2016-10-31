@@ -66,21 +66,21 @@ namespace PassSharp
 		public List<NFC> nfc { get; set; }
 
 		public TransitType? transitType { get; set; }
-		public Dictionary<FieldType, List<Field>> fields { get; private set; }
+		public Dictionary<FieldType, List<Field>> fields { get; protected set; }
 
 		// Assets
-		public Asset icon { private get; set; }
-		public Asset icon2x { private get; set; }
-		public Asset logo { private get; set; }
-		public Asset logo2x { private get; set; }
-		public Asset background { private get; set; }
-		public Asset background2x { private get; set; }
-		public Asset footer { private get; set; }
-		public Asset footer2x { private get; set; }
-		public Asset strip { private get; set; }
-		public Asset strip2x { private get; set; }
-		public Asset thumbnail { private get; set; }
-		public Asset thumbnail2x { private get; set; }
+		public Asset icon { get; set; }
+		public Asset icon2x { get; set; }
+		public Asset logo { get; set; }
+		public Asset logo2x { get; set; }
+		public Asset background { get; set; }
+		public Asset background2x { get; set; }
+		public Asset footer { get; set; }
+		public Asset footer2x { get; set; }
+		public Asset strip { get; set; }
+		public Asset strip2x { get; set; }
+		public Asset thumbnail { get; set; }
+		public Asset thumbnail2x { get; set; }
 
 		public void AddField(FieldType type, Field field)
 		{
@@ -146,25 +146,4 @@ namespace PassSharp
 
 	}
 
-	//public static class PassHelpers
-	//{
-	//	public static Func<PassFieldType, string> SerializePassFieldType => (value) =>
-	//	{
-	//		switch (value)
-	//		{
-	//			case PassFieldType.Auxiliary:
-	//				return "auxiliaryFields";
-	//			case PassFieldType.Back:
-	//				return "backFields";
-	//			case PassFieldType.Header:
-	//				return "headerFields";
-	//			case PassFieldType.Primary:
-	//				return "primaryFields";
-	//			case PassFieldType.Secondary:
-	//				return "secondaryFields";
-	//			default:
-	//				return "";
-	//		}
-	//	};
-	//}
 }

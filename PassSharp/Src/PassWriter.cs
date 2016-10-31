@@ -7,12 +7,16 @@ using System.Security.Cryptography.X509Certificates;
 using Org.BouncyCastle.Cms;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.X509.Store;
+using PassSharp.Fields;
 using ServiceStack;
 using ServiceStack.Text;
 using X509Certificate = Org.BouncyCastle.X509.X509Certificate;
 
 namespace PassSharp
 {
+
+	public enum 
+
 	internal class PassWriter
 	{
 		public static ZipArchive archive;
@@ -22,14 +26,19 @@ namespace PassSharp
 			using (archive = new ZipArchive(stream, ZipArchiveMode.Update, true))
 			{
 				AddEntry(@"pass.json", ToJson(pass));
-				//AddEntry(@"icon.png", pass.icon);
-				//AddEntry(@"icon@2x.png", pass.icon2x);
-				AddFileEntry(@"icon.png", @"/Users/jwilson/projects/BarcodePass/barcode.pass/icon.png");
-				AddFileEntry(@"icon@2x.png", @"/Users/jwilson/projects/BarcodePass/barcode.pass/icon@2x.png");
-				AddFileEntry(@"logo.png", @"/Users/jwilson/projects/BarcodePass/barcode.pass/logo.png");
-				AddFileEntry(@"logo@2x.png", @"/Users/jwilson/projects/BarcodePass/barcode.pass/logo@2x.png");
-				AddFileEntry(@"strip.png", @"/Users/jwilson/projects/BarcodePass/barcode.pass/strip.png");
-				AddFileEntry(@"strip@2x.png", @"/Users/jwilson/projects/BarcodePass/barcode.pass/strip@2x.png");
+
+				AddAssetEntry(@"icon.png", pass.icon);
+				AddAssetEntry(@"icon@2x.png", pass.icon2x);
+				AddAssetEntry(@"logo.png", pass.logo);
+				AddAssetEntry(@"logo@2x.png", pass.logo2x);
+				AddAssetEntry(@"background.png", pass.background);
+				AddAssetEntry(@"background@2x.png", pass.background2x);
+				AddAssetEntry(@"footer.png", pass.footer);
+				AddAssetEntry(@"footer@2x.png", pass.footer2x);
+				AddAssetEntry(@"strip.png", pass.strip);
+				AddAssetEntry(@"strip@2x.png", pass.strip2x);
+				AddAssetEntry(@"thumbnail.png", pass.thumbnail);
+				AddAssetEntry(@"thumbnail@2x.png", pass.thumbnail2x);
 
 				var manifestJson = GenerateManifest().ToJson();
 				AddEntry(@"manifest.json", manifestJson);
@@ -100,6 +109,14 @@ namespace PassSharp
 			AddEntry(name, File.ReadAllBytes(filename));
 		}
 
+		protected static void AddAssetEntry(string name, Asset asset)
+		{
+			if (null != asset)
+			{
+				AddEntry(name, asset.asset);
+			}
+		}
+
 		protected static string CalculateSHA1(Stream stream)
 		{
 			using (SHA1Managed managed = new SHA1Managed())
@@ -123,7 +140,7 @@ namespace PassSharp
 				{
 					jsonDict.Add(pass.type, value);
 				}
-				else if (name.Equals("type"))
+				else if (name.Equals("type") || (value != null && value.GetType() == typeof(Asset)))
 				{
 					// do nothing
 				}
@@ -136,11 +153,30 @@ namespace PassSharp
 			string json = null;
 			using (JsConfig.CreateScope("ExcludeTypeInfo"))
 			{
-				//JsConfig<FieldType>.SerializeFn = PassHelpers.SerializePassFieldType;
-				//json = jsonDict.ToJson();
+				JsConfig<FieldType>.SerializeFn = SerializeFieldType;
+				json = jsonDict.ToJson();
 			}
 
 			return json;
 		}
+
+		protected static Func<FieldType, string> SerializeFieldType => (value) =>
+		{
+			switch (value)
+			{
+				case FieldType.Auxiliary:
+					return "auxiliaryFields";
+				case FieldType.Back:
+					return "backFields";
+				case FieldType.Header:
+					return "headerFields";
+				case FieldType.Primary:
+					return "primaryFields";
+				case FieldType.Secondary:
+					return "secondaryFields";
+				default:
+					return "";
+			}
+		};
 	}
 }
