@@ -15,8 +15,6 @@ using X509Certificate = Org.BouncyCastle.X509.X509Certificate;
 namespace PassSharp
 {
 
-	public enum 
-
 	internal class PassWriter
 	{
 		public static ZipArchive archive;
