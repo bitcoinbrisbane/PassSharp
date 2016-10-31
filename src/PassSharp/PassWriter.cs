@@ -158,7 +158,7 @@ namespace PassSharp
 			return json;
 		}
 
-		protected static Func<FieldType, string> SerializeFieldType => (value) =>
+		protected static Func<FieldType, string> SerializeFieldType = (value) =>
 		{
 			switch (value)
 			{
