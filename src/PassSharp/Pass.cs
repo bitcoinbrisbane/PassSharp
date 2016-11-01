@@ -86,16 +86,13 @@ namespace PassSharp
 		{
 			List<Field> fieldsForType;
 
-			if (fields == null)
-			{
+			if (fields == null) {
 				fields = new Dictionary<FieldType, List<Field>>();
 			}
 
-			if (fields.ContainsKey(type))
-			{
+			if (fields.ContainsKey(type)) {
 				fieldsForType = fields[type];
-			}
-			else {
+			} else {
 				fieldsForType = new List<Field>();
 			}
 
@@ -106,8 +103,7 @@ namespace PassSharp
 
 		public void AddBeacon(Beacon beacon)
 		{
-			if (beacons == null)
-			{
+			if (beacons == null) {
 				beacons = new List<Beacon>();
 			}
 
@@ -116,8 +112,7 @@ namespace PassSharp
 
 		public void AddLocation(Location location)
 		{
-			if (locations == null)
-			{
+			if (locations == null) {
 				locations = new List<Location>();
 			}
 
@@ -126,8 +121,7 @@ namespace PassSharp
 
 		public void AddBarcode(Barcode barcode)
 		{
-			if (barcodes == null)
-			{
+			if (barcodes == null) {
 				barcodes = new List<Barcode>();
 			}
 
@@ -136,8 +130,7 @@ namespace PassSharp
 
 		public void AddNFC(NFC _nfc)
 		{
-			if (nfc == null)
-			{
+			if (nfc == null) {
 				nfc = new List<NFC>();
 			}
 

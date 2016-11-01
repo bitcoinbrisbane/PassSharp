@@ -2,13 +2,12 @@
 
 namespace PassSharp.Fields
 {
-	public enum TransitType
-	{
-		PKTransitTypeAir,
-		PKTransitTypeBoat,
-		PKTransitTypeBus,
-		PKTransitTypeGeneric,
-		PKTransitTypeTrain
-	}
-
+  public enum TransitType
+  {
+    PKTransitTypeAir,
+    PKTransitTypeBoat,
+    PKTransitTypeBus,
+    PKTransitTypeGeneric,
+    PKTransitTypeTrain
+  }
 }

@@ -15,14 +15,13 @@ using X509Certificate = Org.BouncyCastle.X509.X509Certificate;
 namespace PassSharp
 {
 
-	internal class PassWriter
+	public class PassWriter
 	{
-		public static ZipArchive archive;
+		static ZipArchive archive;
 
 		public static void WriteToStream(Pass pass, Stream stream, X509Certificate2 appleCert, X509Certificate2 passCert)
 		{
-			using (archive = new ZipArchive(stream, ZipArchiveMode.Update, true))
-			{
+			using (archive = new ZipArchive(stream, ZipArchiveMode.Update, true)) {
 				AddEntry(@"pass.json", ToJson(pass));
 
 				AddAssetEntry(@"icon.png", pass.icon);
@@ -46,8 +45,7 @@ namespace PassSharp
 
 		public static void WriteToFile(Pass pass, string path, X509Certificate2 appleCert, X509Certificate2 passCert)
 		{
-			using (var stream = new FileStream(path, FileMode.OpenOrCreate))
-			{
+			using (var stream = new FileStream(path, FileMode.OpenOrCreate)) {
 				WriteToStream(pass, stream, appleCert, passCert);
 			}
 		}
@@ -56,8 +54,7 @@ namespace PassSharp
 		{
 			var hashManifest = new Dictionary<string, string>();
 
-			foreach (var entry in archive.Entries)
-			{
+			foreach (var entry in archive.Entries) {
 				hashManifest.Add(entry.Name, CalculateSHA1(entry.Open()));
 			}
 
@@ -96,8 +93,7 @@ namespace PassSharp
 
 		protected static void AddEntry(string name, byte[] value)
 		{
-			using (var entry = archive.CreateEntry(name).Open())
-			{
+			using (var entry = archive.CreateEntry(name).Open()) {
 				entry.Write(value, 0, value.Length);
 			}
 		}
@@ -109,16 +105,14 @@ namespace PassSharp
 
 		protected static void AddAssetEntry(string name, Asset asset)
 		{
-			if (null != asset)
-			{
+			if (null != asset) {
 				AddEntry(name, asset.asset);
 			}
 		}
 
 		protected static string CalculateSHA1(Stream stream)
 		{
-			using (SHA1Managed managed = new SHA1Managed())
-			{
+			using (SHA1Managed managed = new SHA1Managed()) {
 				byte[] checksum = managed.ComputeHash(stream);
 				return BitConverter.ToString(checksum).Replace("-", string.Empty).ToLower();
 			}
@@ -129,28 +123,22 @@ namespace PassSharp
 			var properties = pass.GetType().GetProperties();
 			var jsonDict = new Dictionary<object, object>();
 
-			foreach (var property in properties)
-			{
+			foreach (var property in properties) {
 				object name = property.Name;
 				object value = property.GetValue(pass);
 
-				if (name.Equals("fields"))
-				{
+				if (name.Equals("fields")) {
 					jsonDict.Add(pass.type, value);
-				}
-				else if (name.Equals("type") || (value != null && value.GetType() == typeof(Asset)))
-				{
+				} else if (name.Equals("type") || (value != null && value.GetType() == typeof(Asset))) {
 					// do nothing
-				}
-				else {
+				} else {
 					jsonDict.Add(name, value);
 				}
 
 			}
 
 			string json = null;
-			using (JsConfig.CreateScope("ExcludeTypeInfo"))
-			{
+			using (JsConfig.CreateScope("ExcludeTypeInfo")) {
 				JsConfig<FieldType>.SerializeFn = SerializeFieldType;
 				json = jsonDict.ToJson();
 			}
@@ -158,10 +146,8 @@ namespace PassSharp
 			return json;
 		}
 
-		protected static Func<FieldType, string> SerializeFieldType = (value) =>
-		{
-			switch (value)
-			{
+		protected static Func<FieldType, string> SerializeFieldType = (value) => {
+			switch (value) {
 				case FieldType.Auxiliary:
 					return "auxiliaryFields";
 				case FieldType.Back:

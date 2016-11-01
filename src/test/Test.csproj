@@ -42,7 +42,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PassBookSpecs.cs" />
+    <Compile Include="PassFieldSpecs.cs" />
+    <Compile Include="PassGenerationSpecs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PassSharp\PassSharp.csproj">
