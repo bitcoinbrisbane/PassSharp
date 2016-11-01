@@ -42,7 +42,7 @@ namespace PassSharp
 		// Relevance Keys
 		public List<Beacon> beacons { get; set; }
 		public List<Location> locations { get; set; }
-		public int maxDistance { get; set; }
+		public int? maxDistance { get; set; }
 		public DateTime? relevantDate { get; set; }
 
 		// Style Keys

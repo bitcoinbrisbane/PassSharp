@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -123,14 +124,18 @@ namespace PassSharp
 			var properties = pass.GetType().GetProperties();
 			var jsonDict = new Dictionary<object, object>();
 
+			Func<object, bool> isNull = value => value == null;
+			Func<object, bool> isAsset = value => value.GetType() == typeof(Asset);
+			Func<object, bool> isEmptyList = value => value is IList && ((IList)value).Count == 0;
+
 			foreach (var property in properties) {
 				object name = property.Name;
 				object value = property.GetValue(pass);
 
 				if (name.Equals("fields")) {
 					jsonDict.Add(pass.type, value);
-				} else if (name.Equals("type") || (value != null && value.GetType() == typeof(Asset))) {
-					// do nothing
+				} else if (name.Equals("type") || isNull(value) || isAsset(value) || isEmptyList(value)) {
+					// don't include value
 				} else {
 					jsonDict.Add(name, value);
 				}
