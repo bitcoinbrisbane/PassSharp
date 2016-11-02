@@ -7,10 +7,10 @@ build:
 cache:
   - packages -> **\packages.config
 deploy:
-  provider: NuGet
-  skip_symbols: true
+- provider: NuGet
   api_key:
-    secure: sTIUYo5eceC1Ui12zv2UFsCcjVfFvC9fACPz/PAODrM6Z+UYuTZkIs56uodBNA6r
+    secure: NzqoRXcIEgz85NVKo/Z5MJwOVq/Sew2HRITWGmoSgpkmSv1uLfOXXcMSz2moTdkw
+  skip_symbols: true
   on:
     branch: master
     appveyor_repo_tag: true
