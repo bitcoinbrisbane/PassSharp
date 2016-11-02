@@ -8,12 +8,10 @@
     <licenseUrl>https://github.com/daxko/PassSharp/license</licenseUrl>
     <projectUrl>https://github.com/daxko/PassSharp</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <title>PassSharp</title>
     <description>$description$</description>
     <releaseNotes>Initial release</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>apple wallet passbook passkit</tags>
-    <dependencies>
-      <dependency id="SampleDependency" version="1.0" />
-    </dependencies>
   </metadata>
 </package>
