@@ -52,6 +52,7 @@
     <Compile Include="Fields\NFC.cs" />
     <Compile Include="Fields\TransitType.cs" />
     <Compile Include="Asset.cs" />
+    <Compile Include="Fields\Localization.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

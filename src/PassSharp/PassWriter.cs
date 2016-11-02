@@ -38,6 +38,29 @@ namespace PassSharp
 				AddAssetEntry(@"thumbnail.png", pass.thumbnail);
 				AddAssetEntry(@"thumbnail@2x.png", pass.thumbnail2x);
 
+				if (pass.localizations.Count > 0) {
+					foreach (var localization in pass.localizations) {
+						Func<string, string> entryName = name => @"{0}/{1}".FormatWith("{0}.lproj".FormatWith(localization.culture), name);
+						var passStrings = new List<string>();
+						foreach (var key in localization.values.Keys) {
+							passStrings.Add(@"""{0}"" = ""{1}"";".FormatWith(key, localization.values[key]));
+						}
+						AddEntry(entryName("pass.strings"), passStrings.Join("\\n"));
+						AddAssetEntry(entryName("icon.png"), localization.icon);
+						AddAssetEntry(entryName("icon@2x.png"), localization.icon2x);
+						AddAssetEntry(entryName("logo.png"), localization.logo);
+						AddAssetEntry(entryName("logo@2x.png"), localization.logo2x);
+						AddAssetEntry(entryName("background.png"), localization.background);
+						AddAssetEntry(entryName("background@2x.png"), localization.background2x);
+						AddAssetEntry(entryName("footer.png"), localization.footer);
+						AddAssetEntry(entryName("footer@2x.png"), localization.footer2x);
+						AddAssetEntry(entryName("strip.png"), localization.strip);
+						AddAssetEntry(entryName("strip@2x.png"), localization.strip2x);
+						AddAssetEntry(entryName("thumbnail.png"), localization.thumbnail);
+						AddAssetEntry(entryName("thumbnail@2x.png"), localization.thumbnail2x);
+					}
+				}
+
 				var manifestJson = GenerateManifest().ToJson();
 				AddEntry(@"manifest.json", manifestJson);
 				AddEntry(@"signature", GenerateSignature(manifestJson.ToUtf8Bytes(), appleCert, passCert));
@@ -56,7 +79,7 @@ namespace PassSharp
 			var hashManifest = new Dictionary<string, string>();
 
 			foreach (var entry in archive.Entries) {
-				hashManifest.Add(entry.Name, CalculateSHA1(entry.Open()));
+				hashManifest.Add(entry.FullName, CalculateSHA1(entry.Open()));
 			}
 
 			return hashManifest;
@@ -124,17 +147,18 @@ namespace PassSharp
 			var properties = pass.GetType().GetProperties();
 			var jsonDict = new Dictionary<object, object>();
 
+			Func<string, bool> isIgnoredField = value => new List<string> { "type", "localization" }.Contains(value);
 			Func<object, bool> isNull = value => value == null;
 			Func<object, bool> isAsset = value => value.GetType() == typeof(Asset);
 			Func<object, bool> isEmptyList = value => value is IList && ((IList)value).Count == 0;
 
 			foreach (var property in properties) {
-				object name = property.Name;
+				string name = property.Name;
 				object value = property.GetValue(pass);
 
 				if (name.Equals("fields")) {
 					jsonDict.Add(pass.type, value);
-				} else if (name.Equals("type") || isNull(value) || isAsset(value) || isEmptyList(value)) {
+				} else if (isIgnoredField(name) || isNull(value) || isAsset(value) || isEmptyList(value)) {
 					// don't include value
 				} else {
 					jsonDict.Add(name, value);
