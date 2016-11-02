@@ -11,5 +11,10 @@ namespace PassSharp
 		{
 			asset = File.ReadAllBytes(path);
 		}
+
+		public Asset(byte[] bytes)
+		{
+			asset = bytes;
+		}
 	}
 }

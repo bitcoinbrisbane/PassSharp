@@ -7,7 +7,7 @@ using System.IO;
 using System.Reflection;
 using ServiceStack.Text;
 using System.IO.Compression;
-using System.Security.Cryptography.Pkcs;
+using System.Globalization;
 
 #pragma warning disable 414
 
@@ -40,7 +40,7 @@ namespace Test
     static Pass pass;
     static string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
     static X509Certificate2 appleCert = new X509Certificate2(Path.Combine(path, @"fixtures/certificates/apple.cer"));
-    static X509Certificate2 passCert = new X509Certificate2(Path.Combine(path, @"fixtures/certificates/test.p12"));
+    static X509Certificate2 passCert = new X509Certificate2(Path.Combine(path, @"fixtures/certificates/test.pfx"), "", X509KeyStorageFlags.Exportable);
     static string imagePath = Path.Combine(path, @"fixtures/asset.png");
 
     Establish context = () => {
@@ -66,6 +66,7 @@ namespace Test
       It should_default_format_version = () => json.Get<int>("formatVersion").ShouldEqual(1);
       It should_not_contain_fields_key = () => json.Get("fields").ShouldBeNull();
       It should_not_contain_assets = () => json.Get("icon").ShouldBeNull();
+      It should_not_contain_localization_field = () => json.Get("localizations").ShouldBeNull();
       It should_not_contain_empty_lists = () => json.Get("beacons").ShouldBeNull();
       It should_set_pass_type = () => json.Get("generic").ShouldNotBeNull();
       It should_contain_pass_fields = () => json.Get<List<Field>>("generic").Count.ShouldEqual(1);
@@ -92,13 +93,59 @@ namespace Test
       static ZipArchive zip;
 
       Because of = () => {
-        using (var stream = new MemoryStream()) {
+          var stream = new MemoryStream();
           PassWriter.WriteToStream(pass, stream, appleCert, passCert);
           zip = new ZipArchive(stream);
-        }
       };
 
       It should_have_a_signature_entry = () => zip.GetEntry("signature").ShouldNotBeNull();
+    }
+
+    public class when_generating_a_pass_with_localization
+    {
+      static ZipArchive zip;
+
+      Establish context = () => {
+        pass = new Pass {
+          type = PassType.generic,
+          passTypeIdentifier = "pass.com.test",
+          description = "a sample pass description",
+          organizationName = "acme corp",
+          serialNumber = "abc123456",
+          teamIdentifier = "U1234567",
+          icon = new Asset(imagePath)
+        };
+        pass.AddField(FieldType.Primary, new Field { key = "pass-field", label = "pass-field-label", value = "pass-field-value" });
+
+        var localizationEn = new Localization(CultureInfo.GetCultureInfo("en"));
+        localizationEn.Add("pass-field-label", "pass field label");
+        localizationEn.Add("pass-field-value", "pass field value");
+        localizationEn.background = new Asset(imagePath);
+        var localizationEs = new Localization(CultureInfo.GetCultureInfo("es"));
+        localizationEs.Add("pass-field-label", "Etiqueta de campo de paso");
+        localizationEs.Add("pass-field-value", "Valor de campo de paso");
+        localizationEs.background = new Asset(imagePath);
+
+        pass.AddLocalization(localizationEn);
+        pass.AddLocalization(localizationEs);
+      };
+
+      Because of = () => {
+        var stream = new MemoryStream();
+        PassWriter.WriteToStream(pass, stream, appleCert, passCert);
+        zip = new ZipArchive(stream);
+      };
+
+      It should_have_localized_dictionary_files = () => {
+        zip.GetEntry("en.lproj/pass.strings").ShouldNotBeNull();
+        zip.GetEntry("es.lproj/pass.strings").ShouldNotBeNull();
+      };
+
+      It should_have_localized_images = () => {
+        zip.GetEntry("en.lproj/background.png").ShouldNotBeNull();
+        zip.GetEntry("es.lproj/background.png").ShouldNotBeNull();
+      };
+
     }
 
   }

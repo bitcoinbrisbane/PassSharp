@@ -82,6 +82,9 @@ namespace PassSharp
 		public Asset thumbnail { get; set; }
 		public Asset thumbnail2x { get; set; }
 
+		// Localization
+		public List<Localization> localizations { get; set; }
+
 		public void AddField(FieldType type, Field field)
 		{
 			List<Field> fieldsForType;
@@ -135,6 +138,15 @@ namespace PassSharp
 			}
 
 			nfc.Add(_nfc);
+		}
+
+		public void AddLocalization(Localization localization)
+		{
+			if (localizations == null) {
+				localizations = new List<Localization>();
+			}
+
+			localizations.Add(localization);
 		}
 
 	}

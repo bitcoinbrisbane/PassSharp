@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Machine.Specifications;
 using PassSharp;
@@ -107,6 +108,21 @@ namespace Test
         pass.AddNFC(new NFC { });
       };
       It should_have_multiple_nfcs = () => pass.nfc.Count.ShouldEqual(2);
+    }
+
+    public class when_adding_a_localization
+    {
+      Because of = () => pass.AddLocalization(new Localization(CultureInfo.CurrentCulture));
+      It should_have_one_localization = () => pass.localizations.Count.ShouldEqual(1);
+    }
+
+    public class when_adding_multiple_localizations
+    {
+      Because of = () => {
+        pass.AddLocalization(new Localization(CultureInfo.CurrentCulture));
+        pass.AddLocalization(new Localization(CultureInfo.CurrentCulture));
+      };
+      It should_have_multiple_localizations = () => pass.localizations.Count.ShouldEqual(2);
     }
 
   }
