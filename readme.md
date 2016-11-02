@@ -1,6 +1,6 @@
 # PassSharp
 
-[![Travis CIBuild Status](https://travis-ci.org/daxko/PassSharp.svg?branch=master)](https://travis-ci.org/daxko/PassSharp) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/3labeodvrch97maw/branch/master?svg=true)](https://ci.appveyor.com/project/daxko/PassSharp)
+[![Travis CIBuild Status](https://travis-ci.org/daxko/PassSharp.svg?branch=master)](https://travis-ci.org/daxko/PassSharp) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/7xm3msq279h5pgah/branch/master?svg=true)](https://ci.appveyor.com/project/daxko/PassSharp) [![NuGet](https://img.shields.io/nuget/v/PassSharp.svg)](https://www.nuget.org/packages/PassSharp/)
 
 An Apple Wallet Passbook Library in C#/.NET
 
