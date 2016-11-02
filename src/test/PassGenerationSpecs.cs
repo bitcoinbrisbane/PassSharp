@@ -40,7 +40,7 @@ namespace Test
     static Pass pass;
     static string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
     static X509Certificate2 appleCert = new X509Certificate2(Path.Combine(path, @"fixtures/certificates/apple.cer"));
-    static X509Certificate2 passCert = new X509Certificate2(Path.Combine(path, @"fixtures/certificates/test.p12"));
+    static X509Certificate2 passCert = new X509Certificate2(Path.Combine(path, @"fixtures/certificates/test.pfx"), "", X509KeyStorageFlags.Exportable);
     static string imagePath = Path.Combine(path, @"fixtures/asset.png");
 
     Establish context = () => {
@@ -93,10 +93,9 @@ namespace Test
       static ZipArchive zip;
 
       Because of = () => {
-        using (var stream = new MemoryStream()) {
+          var stream = new MemoryStream();
           PassWriter.WriteToStream(pass, stream, appleCert, passCert);
           zip = new ZipArchive(stream);
-        }
       };
 
       It should_have_a_signature_entry = () => zip.GetEntry("signature").ShouldNotBeNull();
@@ -132,10 +131,9 @@ namespace Test
       };
 
       Because of = () => {
-        using (var stream = new MemoryStream()) {
-          PassWriter.WriteToStream(pass, stream, appleCert, passCert);
-          zip = new ZipArchive(stream);
-        }
+        var stream = new MemoryStream();
+        PassWriter.WriteToStream(pass, stream, appleCert, passCert);
+        zip = new ZipArchive(stream);
       };
 
       It should_have_localized_dictionary_files = () => {

@@ -38,14 +38,16 @@ namespace PassSharp
 				AddAssetEntry(@"thumbnail.png", pass.thumbnail);
 				AddAssetEntry(@"thumbnail@2x.png", pass.thumbnail2x);
 
-				if (pass.localizations.Count > 0) {
+				if (pass.localizations != null && pass.localizations.Count > 0) {
 					foreach (var localization in pass.localizations) {
 						Func<string, string> entryName = name => @"{0}/{1}".FormatWith("{0}.lproj".FormatWith(localization.culture), name);
+
 						var passStrings = new List<string>();
 						foreach (var key in localization.values.Keys) {
 							passStrings.Add(@"""{0}"" = ""{1}"";".FormatWith(key, localization.values[key]));
 						}
-						AddEntry(entryName("pass.strings"), passStrings.Join("\\n"));
+
+						AddEntry(entryName("pass.strings"), passStrings.Join("\n"));
 						AddAssetEntry(entryName("icon.png"), localization.icon);
 						AddAssetEntry(entryName("icon@2x.png"), localization.icon2x);
 						AddAssetEntry(entryName("logo.png"), localization.logo);
