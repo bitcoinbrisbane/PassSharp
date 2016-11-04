@@ -71,16 +71,22 @@ namespace PassSharp
 		// Assets
 		public Asset icon { get; set; }
 		public Asset icon2x { get; set; }
+		public Asset icon3x { get; set; }
 		public Asset logo { get; set; }
 		public Asset logo2x { get; set; }
+		public Asset logo3x { get; set; }
 		public Asset background { get; set; }
 		public Asset background2x { get; set; }
+		public Asset background3x { get; set; }
 		public Asset footer { get; set; }
 		public Asset footer2x { get; set; }
+		public Asset footer3x { get; set; }
 		public Asset strip { get; set; }
 		public Asset strip2x { get; set; }
+		public Asset strip3x { get; set; }
 		public Asset thumbnail { get; set; }
 		public Asset thumbnail2x { get; set; }
+		public Asset thumbnail3x { get; set; }
 
 		// Localization
 		public List<Localization> localizations { get; set; }

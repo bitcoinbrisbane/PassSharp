@@ -27,16 +27,22 @@ namespace PassSharp
 
 				AddAssetEntry(@"icon.png", pass.icon);
 				AddAssetEntry(@"icon@2x.png", pass.icon2x);
+				AddAssetEntry(@"icon@3x.png", pass.icon3x);
 				AddAssetEntry(@"logo.png", pass.logo);
 				AddAssetEntry(@"logo@2x.png", pass.logo2x);
+				AddAssetEntry(@"logo@3x.png", pass.logo3x);
 				AddAssetEntry(@"background.png", pass.background);
 				AddAssetEntry(@"background@2x.png", pass.background2x);
+				AddAssetEntry(@"background@3x.png", pass.background3x);
 				AddAssetEntry(@"footer.png", pass.footer);
 				AddAssetEntry(@"footer@2x.png", pass.footer2x);
+				AddAssetEntry(@"footer@3x.png", pass.footer3x);
 				AddAssetEntry(@"strip.png", pass.strip);
 				AddAssetEntry(@"strip@2x.png", pass.strip2x);
+				AddAssetEntry(@"strip@3x.png", pass.strip3x);
 				AddAssetEntry(@"thumbnail.png", pass.thumbnail);
 				AddAssetEntry(@"thumbnail@2x.png", pass.thumbnail2x);
+				AddAssetEntry(@"thumbnail@3x.png", pass.thumbnail3x);
 
 				if (pass.localizations != null && pass.localizations.Count > 0) {
 					foreach (var localization in pass.localizations) {
@@ -50,16 +56,22 @@ namespace PassSharp
 						AddEntry(entryName("pass.strings"), passStrings.Join("\n"));
 						AddAssetEntry(entryName("icon.png"), localization.icon);
 						AddAssetEntry(entryName("icon@2x.png"), localization.icon2x);
+						AddAssetEntry(entryName("icon@3x.png"), localization.icon3x);
 						AddAssetEntry(entryName("logo.png"), localization.logo);
 						AddAssetEntry(entryName("logo@2x.png"), localization.logo2x);
+						AddAssetEntry(entryName("logo@3x.png"), localization.logo3x);
 						AddAssetEntry(entryName("background.png"), localization.background);
 						AddAssetEntry(entryName("background@2x.png"), localization.background2x);
+						AddAssetEntry(entryName("background@3x.png"), localization.background3x);
 						AddAssetEntry(entryName("footer.png"), localization.footer);
 						AddAssetEntry(entryName("footer@2x.png"), localization.footer2x);
+						AddAssetEntry(entryName("footer@3x.png"), localization.footer3x);
 						AddAssetEntry(entryName("strip.png"), localization.strip);
 						AddAssetEntry(entryName("strip@2x.png"), localization.strip2x);
+						AddAssetEntry(entryName("strip@3x.png"), localization.strip3x);
 						AddAssetEntry(entryName("thumbnail.png"), localization.thumbnail);
 						AddAssetEntry(entryName("thumbnail@2x.png"), localization.thumbnail2x);
+						AddAssetEntry(entryName("thumbnail@3x.png"), localization.thumbnail3x);
 					}
 				}
 
