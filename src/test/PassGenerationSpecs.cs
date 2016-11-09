@@ -55,6 +55,7 @@ namespace Test
       };
       pass.AddLocation(new Location { });
       pass.AddField(FieldType.Primary, new Field { key = "pass-field", label = "Pass Field Label", value = "foobar" });
+      pass.AddLocalization(new Localization(CultureInfo.GetCultureInfo("EN")));
     };
 
     public class when_generating_pass_json
@@ -125,9 +126,11 @@ namespace Test
         localizationEs.Add("pass-field-label", "Etiqueta de campo de paso");
         localizationEs.Add("pass-field-value", "Valor de campo de paso");
         localizationEs.background = new Asset(imagePath);
+        var localizationZh = new Localization(CultureInfo.GetCultureInfo("zh"));
 
         pass.AddLocalization(localizationEn);
         pass.AddLocalization(localizationEs);
+        pass.AddLocalization(localizationZh);
       };
 
       Because of = () => {
@@ -144,6 +147,10 @@ namespace Test
       It should_have_localized_images = () => {
         zip.GetEntry("en.lproj/background.png").ShouldNotBeNull();
         zip.GetEntry("es.lproj/background.png").ShouldNotBeNull();
+      };
+
+      It should_not_have_pass_strings_for_localizations_without_values = () => {
+        zip.GetEntry("zh.lproj/pass.strings").ShouldBeNull();
       };
 
     }

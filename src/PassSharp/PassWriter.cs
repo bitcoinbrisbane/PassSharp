@@ -49,11 +49,13 @@ namespace PassSharp
 						Func<string, string> entryName = name => @"{0}/{1}".FormatWith("{0}.lproj".FormatWith(localization.culture), name);
 
 						var passStrings = new List<string>();
-						foreach (var key in localization.values.Keys) {
-							passStrings.Add(@"""{0}"" = ""{1}"";".FormatWith(key, localization.values[key]));
+						if (localization.values != null) {
+							foreach (var key in localization.values.Keys) {
+								passStrings.Add(@"""{0}"" = ""{1}"";".FormatWith(key, localization.values[key]));
+							}
+							AddEntry(entryName("pass.strings"), passStrings.Join("\n"));
 						}
 
-						AddEntry(entryName("pass.strings"), passStrings.Join("\n"));
 						AddAssetEntry(entryName("icon.png"), localization.icon);
 						AddAssetEntry(entryName("icon@2x.png"), localization.icon2x);
 						AddAssetEntry(entryName("icon@3x.png"), localization.icon3x);
@@ -161,7 +163,7 @@ namespace PassSharp
 			var properties = pass.GetType().GetProperties();
 			var jsonDict = new Dictionary<object, object>();
 
-			Func<string, bool> isIgnoredField = value => new List<string> { "type", "localization" }.Contains(value);
+			Func<string, bool> isIgnoredField = value => new List<string> { "type", "localizations" }.Contains(value);
 			Func<object, bool> isNull = value => value == null;
 			Func<object, bool> isAsset = value => value.GetType() == typeof(Asset);
 			Func<object, bool> isEmptyList = value => value is IList && ((IList)value).Count == 0;
