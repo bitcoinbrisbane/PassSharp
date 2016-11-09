@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -173,7 +174,9 @@ namespace PassSharp
 				object value = property.GetValue(pass);
 
 				if (name.Equals("fields")) {
-					jsonDict.Add(pass.type, value);
+					var fields = ((Dictionary<FieldType, List<Field>>)value)
+						.ToDictionary(x => SerializeFieldType(x.Key), x => x.Value);
+					jsonDict.Add(pass.type, fields);
 				} else if (isIgnoredField(name) || isNull(value) || isAsset(value) || isEmptyList(value)) {
 					// don't include value
 				} else {
@@ -183,8 +186,7 @@ namespace PassSharp
 			}
 
 			string json = null;
-			using (JsConfig.CreateScope("ExcludeTypeInfo")) {
-				JsConfig<FieldType>.SerializeFn = SerializeFieldType;
+			using (var config = JsConfig.CreateScope("ExcludeTypeInfo")) {
 				json = jsonDict.ToJson();
 			}
 
@@ -207,5 +209,6 @@ namespace PassSharp
 					return "";
 			}
 		};
+
 	}
 }

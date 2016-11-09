@@ -8,6 +8,7 @@ using System.Reflection;
 using ServiceStack.Text;
 using System.IO.Compression;
 using System.Globalization;
+using System.Linq;
 
 #pragma warning disable 414
 
@@ -70,7 +71,14 @@ namespace Test
       It should_not_contain_localization_field = () => json.Get("localizations").ShouldBeNull();
       It should_not_contain_empty_lists = () => json.Get("beacons").ShouldBeNull();
       It should_set_pass_type = () => json.Get("generic").ShouldNotBeNull();
-      It should_contain_pass_fields = () => json.Get<List<Field>>("generic").Count.ShouldEqual(1);
+      It should_contain_pass_pass_type = () => json.Get("generic").ShouldNotBeNull();
+      It should_contain_pass_fields = () => {
+        var fields = json.Object("generic").GetArray<Dictionary<string, string>>("primaryFields")[0];
+        fields.Count.ShouldEqual(3);
+        fields.FirstOrDefault(x => x.Key.Equals("key")).Value.ShouldEqual("pass-field");
+        fields.FirstOrDefault(x => x.Key.Equals("label")).Value.ShouldEqual("Pass Field Label");
+        fields.FirstOrDefault(x => x.Key.Equals("value")).Value.ShouldEqual("foobar");
+      };
     }
 
     //public class when_generating_a_manifest
