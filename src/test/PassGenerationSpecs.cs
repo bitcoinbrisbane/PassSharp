@@ -8,6 +8,7 @@ using System.Reflection;
 using ServiceStack.Text;
 using System.IO.Compression;
 using System.Globalization;
+using System.Linq;
 
 #pragma warning disable 414
 
@@ -55,6 +56,7 @@ namespace Test
       };
       pass.AddLocation(new Location { });
       pass.AddField(FieldType.Primary, new Field { key = "pass-field", label = "Pass Field Label", value = "foobar" });
+      pass.AddLocalization(new Localization(CultureInfo.GetCultureInfo("EN")));
     };
 
     public class when_generating_pass_json
@@ -69,7 +71,14 @@ namespace Test
       It should_not_contain_localization_field = () => json.Get("localizations").ShouldBeNull();
       It should_not_contain_empty_lists = () => json.Get("beacons").ShouldBeNull();
       It should_set_pass_type = () => json.Get("generic").ShouldNotBeNull();
-      It should_contain_pass_fields = () => json.Get<List<Field>>("generic").Count.ShouldEqual(1);
+      It should_contain_pass_pass_type = () => json.Get("generic").ShouldNotBeNull();
+      It should_contain_pass_fields = () => {
+        var fields = json.Object("generic").GetArray<Dictionary<string, string>>("primaryFields")[0];
+        fields.Count.ShouldEqual(3);
+        fields.FirstOrDefault(x => x.Key.Equals("key")).Value.ShouldEqual("pass-field");
+        fields.FirstOrDefault(x => x.Key.Equals("label")).Value.ShouldEqual("Pass Field Label");
+        fields.FirstOrDefault(x => x.Key.Equals("value")).Value.ShouldEqual("foobar");
+      };
     }
 
     //public class when_generating_a_manifest
@@ -125,9 +134,11 @@ namespace Test
         localizationEs.Add("pass-field-label", "Etiqueta de campo de paso");
         localizationEs.Add("pass-field-value", "Valor de campo de paso");
         localizationEs.background = new Asset(imagePath);
+        var localizationZh = new Localization(CultureInfo.GetCultureInfo("zh"));
 
         pass.AddLocalization(localizationEn);
         pass.AddLocalization(localizationEs);
+        pass.AddLocalization(localizationZh);
       };
 
       Because of = () => {
@@ -144,6 +155,10 @@ namespace Test
       It should_have_localized_images = () => {
         zip.GetEntry("en.lproj/background.png").ShouldNotBeNull();
         zip.GetEntry("es.lproj/background.png").ShouldNotBeNull();
+      };
+
+      It should_not_have_pass_strings_for_localizations_without_values = () => {
+        zip.GetEntry("zh.lproj/pass.strings").ShouldBeNull();
       };
 
     }

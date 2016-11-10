@@ -10,7 +10,7 @@ namespace PassSharp.Fields
     public List<FieldDataType> dataDetectorTypes { get; set; }
     public string key { get; set; }
     public string label { get; set; }
-    public FieldAlignment textAlignment { get; set; }
+    public FieldAlignment? textAlignment { get; set; }
     public string value { get; set; }
   }
 }
