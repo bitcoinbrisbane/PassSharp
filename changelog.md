@@ -1,3 +1,8 @@
+## [1.1.1](https://github.com/daxko/PassSharp/releases/tag/v1.1.1) - 2016-11-10
+
+* Bugfix: prevent localization values from appearing inside pass.json
+* Bugfix: fix field types serialization when ServiceStack.Text is used as a peer dependency
+
 ## [1.1.0](https://github.com/daxko/PassSharp/releases/tag/v1.1.0) - 2016-11-04
 
 Added ability to include @3x images for iPhone 6 Plus and newer devices.
