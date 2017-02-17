@@ -187,6 +187,7 @@ namespace PassSharp
 
 			string json = null;
 			using (var config = JsConfig.CreateScope("ExcludeTypeInfo")) {
+				JsConfig.DateHandler = DateHandler.ISO8601;
 				json = jsonDict.ToJson();
 			}
 

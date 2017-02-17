@@ -9,6 +9,7 @@ using ServiceStack.Text;
 using System.IO.Compression;
 using System.Globalization;
 using System.Linq;
+using System;
 
 #pragma warning disable 414
 
@@ -54,6 +55,7 @@ namespace Test
         teamIdentifier = "U1234567",
         icon = new Asset(imagePath)
       };
+      pass.expirationDate = new DateTime(2016, 2, 3, 10, 30, 45, DateTimeKind.Utc);
       pass.AddLocation(new Location { });
       pass.AddField(FieldType.Primary, new Field { key = "pass-field", label = "Pass Field Label", value = "foobar" });
       pass.AddLocalization(new Localization(CultureInfo.GetCultureInfo("EN")));
@@ -71,6 +73,7 @@ namespace Test
       It should_not_contain_localization_field = () => json.Get("localizations").ShouldBeNull();
       It should_not_contain_empty_lists = () => json.Get("beacons").ShouldBeNull();
       It should_set_pass_type = () => json.Get("generic").ShouldNotBeNull();
+      It should_set_expiration_date = () => json.Get("expirationDate").ShouldEqual("2016-02-03T10:30:45.0000000Z");
       It should_contain_pass_pass_type = () => json.Get("generic").ShouldNotBeNull();
       It should_contain_pass_fields = () => {
         var fields = json.Object("generic").GetArray<Dictionary<string, string>>("primaryFields")[0];
